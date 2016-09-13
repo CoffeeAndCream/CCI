@@ -3,8 +3,8 @@ Chapter 1
 Interview Question 1.5
 Write a method to compress strings. Return the original string.
 Example:
-	Input: "aabbcccc"
-	Compression: "a2b2c4"
+	Input: "aabbccccaaa"
+	Compression: "a2b2c4a3"
     Output: "aabbcccc"
 */
 
