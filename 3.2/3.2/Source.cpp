@@ -54,7 +54,7 @@ public:
 			top_temp = top_temp->next;
 			cout << "Popping... " << top->data << "\n";
 			free(top); 
-				top = top_temp;
+			top = top_temp;
 			count--;
 		}
 		else{
