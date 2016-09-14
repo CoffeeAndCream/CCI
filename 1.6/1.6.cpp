@@ -33,7 +33,7 @@ void rotate(int MATRIX[5][5], int n){
     for(int layer = 0; layer < n/2; layer++){
         int first = layer;
         int last = n - layer - 1;
-        for(int j = 0; j < last; j++){
+        for(int j = first; j < last; j++){
             //...swap
             int offset = j - first;
             //save top
