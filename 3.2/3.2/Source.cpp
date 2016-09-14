@@ -18,39 +18,51 @@ private:
 	struct Node{
 		Node *next;
 		int data;
-	}; Node *root = new Node;
+		Node(Node* next, int data)
+			: next(next)
+			, data(data)
+		{}
+	};
+	Node *top = (struct Node *)malloc(1 * sizeof(struct Node));
+	Node *top1 = (struct Node *)malloc(1 * sizeof(struct Node));
 
 public:
+
+	int count = 0;
+
 	Stack(){
-		root->next = NULL;
 	}
 
 	void push(int a){
-		Node *temp = root;
-		Node *node = new Node;
-		node->data = a;
-		node->next = NULL;
-
-		while (temp->next){
-			temp = temp->next;
+		if (top == NULL)
+		{
+			top = (struct Node *)malloc(1 * sizeof(struct Node));
+			top->next = NULL;
+			top->data = a;
 		}
-		temp->next = node;
+		else
+		{
+			Node *temp = (struct Node *)malloc(1 * sizeof(struct Node));
+			temp->next = top;
+			temp->data = a;
+			top = temp;
+		}
+		count++;
 	}
 
-	int pop(){
-		Node *temp = root;
-		if (temp->next){
-			while (temp->next->next){
-				temp = temp->next;
-			}
+	void pop(){
+		top1 = top;
 
-			int data = temp->next->data;
-			temp->next = NULL;
-			return data;
+		if (top1 == NULL){
+			cout << "Empty stack\n";
+			return;
 		}
 		else{
-			cout << "Stack empty\n";
-			return -1;
+			top1 = top1->next;
+			cout << "Popping... " << top->data << "\n";
+			free(top);
+			top = top1;
+			count--;
 		}
 	}
 };
@@ -62,9 +74,9 @@ int main(){
 	a.push(10);
 	a.push(15);
 
-	cout << a.pop() << " is popped\n";
-	cout << a.pop() << " is popped\n";
-	cout << a.pop() << " is popped\n";
+	a.pop();
+	a.pop();
+	a.pop();
 
 	system("pause");
 	return 0;
