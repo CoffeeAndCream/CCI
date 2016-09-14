@@ -23,6 +23,7 @@ private:
 			, data(data)
 		{}
 	};
+
 	Node *top = (struct Node *)malloc(1 * sizeof(struct Node));
 	Node *top_temp = (struct Node *)malloc(1 * sizeof(struct Node));
 
@@ -34,13 +35,11 @@ public:
 	}
 
 	void push(int a){
-		if (top == NULL)
-		{
+		if (top == NULL){
 			top->next = NULL;
 			top->data = a;
 		}
-		else
-		{
+		else{
 			Node *temp = (struct Node *)malloc(1 * sizeof(struct Node));
 			temp->next = top;
 			temp->data = a;
