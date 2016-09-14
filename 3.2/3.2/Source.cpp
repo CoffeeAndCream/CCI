@@ -24,7 +24,7 @@ private:
 		{}
 	};
 	Node *top = (struct Node *)malloc(1 * sizeof(struct Node));
-	Node *top1 = (struct Node *)malloc(1 * sizeof(struct Node));
+	Node *top_temp = (struct Node *)malloc(1 * sizeof(struct Node));
 
 public:
 
@@ -36,7 +36,6 @@ public:
 	void push(int a){
 		if (top == NULL)
 		{
-			top = (struct Node *)malloc(1 * sizeof(struct Node));
 			top->next = NULL;
 			top->data = a;
 		}
@@ -51,17 +50,17 @@ public:
 	}
 
 	void pop(){
-		top1 = top;
+		top_temp = top;
 
-		if (top1 == NULL){
+		if (top_temp == NULL){
 			cout << "Empty stack\n";
 			return;
 		}
 		else{
-			top1 = top1->next;
+			top_temp = top_temp->next;
 			cout << "Popping... " << top->data << "\n";
 			free(top);
-			top = top1;
+			top = top_temp;
 			count--;
 		}
 	}
