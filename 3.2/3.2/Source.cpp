@@ -24,26 +24,25 @@ private:
 		{}
 	};
 
-	Node *top = (struct Node *)malloc(1 * sizeof(struct Node));
-	Node *top_temp = (struct Node *)malloc(1 * sizeof(struct Node));
+	Node *top = NULL;
+	Node *top_temp = NULL;
 
 public:
 
 	int count = 0;
+	int min_val = NULL;
 
 	Stack(){
 	}
 
 	void push(int a){
-		if (top == NULL){
-			top->next = NULL;
-			top->data = a;
+		min(a);
+		if (top){
+			Node *temp = new Node(top, a);
+			top = temp;
 		}
 		else{
-			Node *temp = (struct Node *)malloc(1 * sizeof(struct Node));
-			temp->next = top;
-			temp->data = a;
-			top = temp;
+			top = new Node(NULL, a);
 		}
 		count++;
 	}
@@ -51,17 +50,29 @@ public:
 	void pop(){
 		top_temp = top;
 
-		if (top_temp == NULL){
+		if (top_temp){
+			top_temp = top_temp->next;
+			cout << "Popping... " << top->data << "\n";
+			free(top); 
+				top = top_temp;
+			count--;
+		}
+		else{
 			cout << "Empty stack\n";
 			return;
 		}
-		else{
-			top_temp = top_temp->next;
-			cout << "Popping... " << top->data << "\n";
-			free(top);
-			top = top_temp;
-			count--;
+	}
+
+	void min(int a){
+		if (min_val){
+			if (min_val > a){
+				min_val = a;
+			}
 		}
+		else{
+			min_val = a;
+		}
+		cout << "MINIMUM VAL: " << min_val << endl;
 	}
 };
 
