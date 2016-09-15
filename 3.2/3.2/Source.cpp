@@ -8,6 +8,7 @@ NOTES:
 */
 
 #include <iostream>
+#define MAX 100
 
 using namespace std;
 
@@ -30,13 +31,11 @@ private:
 public:
 
 	int count = 0;
-	int min_val = NULL;
 
 	Stack(){
 	}
 
 	void push(int a){
-		min(a);
 		if (top){
 			Node *temp = new Node(top, a);
 			top = temp;
@@ -44,7 +43,6 @@ public:
 		else{
 			top = new Node(NULL, a);
 		}
-		count++;
 	}
 
 	void pop(){
@@ -55,29 +53,43 @@ public:
 			cout << "Popping... " << top->data << "\n";
 			free(top); 
 			top = top_temp;
-			count--;
 		}
 		else{
 			cout << "Empty stack\n";
 			return;
 		}
 	}
-
-	void min(int a){
-		if (min_val){
-			if (min_val > a){
-				min_val = a;
-			}
-		}
-		else{
-			min_val = a;
-		}
-		cout << "MINIMUM VAL: " << min_val << endl;
-	}
 };
+
+
+class Stack_for_Min {
+
+	int arr[MAX];
+	int count = 0;
+
+	public:
+
+		Stack_for_Min(){
+		}
+	
+		void push(int value){
+			count++;
+			arr[count] = value;
+		}
+
+		void pop(){
+			count--;
+		}
+
+		void display(){
+			cout << "Minimum... " << arr[count] << endl;
+		}
+};
+
 
 int main(){
 	Stack a;
+	Stack_for_Min min;
 
 	a.push(3);
 	a.push(10);
@@ -86,6 +98,9 @@ int main(){
 	a.pop();
 	a.pop();
 	a.pop();
+
+	a.push(100);
+	a.push(20);
 
 	system("pause");
 	return 0;
