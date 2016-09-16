@@ -5,93 +5,108 @@ Implement a function to check if a binary tree is balanced. For the purposes of 
 is defined to be a tree such that the heights of the two subtrees of any node never differ by more than one.
 */
 
+
 #include <iostream>
-#include <time.h>
-#include <stdlib.h>
+#include <algorithm>
+#include <cstdlib>
+#include <iomanip>
 
 using namespace std;
 
-class Tree{
+class BinaryTree
+{
 	private:
-		struct TreeNode {
-			int item;         // The data in this node.
-			TreeNode *left;   // Pointer to the left subtree.
-			TreeNode *right;  // Pointer to the right subtree.
+		struct node{
+			int data;
+			node *left;
+			node *right;
 
-			TreeNode(int item = 0)
-				:  item(item)
-			{
-				left, right = NULL;
+			node(int data = 0)
+				: data(data){
+				left = NULL;
+				right = NULL;
 			}
-			
 		};
-
 	public:
-		Tree(){	}
+		BinaryTree(){	//constructor
+		}
 
-		TreeNode *root = NULL;
+		node *root = NULL;
 
-		void treeInsert(TreeNode *&root, int item) {
-			if (root == NULL) {
-				root = new TreeNode(item);
+		void insert(node *&root, int data){
+			if (root){
+				if (data < root->data){
+					insert(root->left, data);
+				}
+				else{
+					insert(root->right, data);
+				}
+			}
+			else{
+				root = new node(data);
 				return;
 			}
-			else if (item > root->item) {
-				treeInsert(root->left, item);
-			}
-			else {
-				treeInsert(root->right, item);
-			}
-		}  
+		}
 
-		void postorderPrint(TreeNode *root) {
-			if (root) {
-				postorderPrint(root->left);
-				postorderPrint(root->right);
-				cout << "Node: " << root->item << " \n";
+		void postorder(node *&root, int indent = 0){
+			if (root != NULL) {
+				if (root->right) {
+					postorder(root->right, indent + 4);
+				}
+				if (indent) {
+					cout << setw(indent) << ' ';
+				}
+				if (root->right) {
+					cout << " /\n" << setw(indent) << ' ';
+				}
+				cout << root->data << "\n ";
+				if (root->left) {
+					cout << setw(indent) << ' ' << " \\\n";
+					postorder(root->left, indent + 4);
+				}
 			}
-		} 
+		}
+		int getHeight(node *root){
+			if (root == NULL)return 0;
+			return (1 + max(getHeight(root->left), getHeight(root->right)));
+		}
 
-		void inorderPrint(TreeNode *root) {     
-			if (root){
-				inorderPrint(root->left);
-				cout << "Node: " << root->item << endl;     
-				inorderPrint(root->right); 
+		bool isBalancedNaive(node *root){
+			if (root == NULL){
+				return true;
 			}
-    	 }
-	 
-		int size(TreeNode *root) { 
-			if (root == NULL) { 
-				return(0); 
-			} 
-			else { 
-				return(size(root->left) + 1 + size(root->right)); 
-			} 
-		} 
-
-		int maxDepth(TreeNode* root) { 
-			if (root==NULL) { 
-				return(0); 
-			} 
-			else { 
-				int lDepth = maxDepth(root->left); 
-				int rDepth = maxDepth(root->right);
-
-				if (lDepth > rDepth) return(lDepth+1); 
-				else return(rDepth+1); 
-			} 
-		} 
+			int heightdifference = getHeight(root->left) - getHeight(root->right);
+			if (abs(heightdifference)>1){
+				return false;
+			}
+			else{
+				return isBalancedNaive(root->left) && isBalancedNaive(root->right);
+			}
+		}
 };
 
 int main(){
-	Tree a;
-	srand(time(NULL));
-	
-	for (int i = 0; i < 6; i++){
-		a.treeInsert(a.root, rand()%10);
-	}
-	a.postorderPrint(a.root);
+
+	BinaryTree a, b;
+
+	a.insert(a.root, 5);
+	a.insert(a.root, 2);
+	a.insert(a.root, 6);
+	a.insert(a.root, 10);
+	a.insert(a.root, 15);
+
+	b.insert(b.root, 5);
+	b.insert(b.root, 2);
+	b.insert(b.root, 6);
+
+	cout << "\nTree 'A'\n\n";
+	a.postorder(a.root);
+	cout << "Tree is balanced: " << a.isBalancedNaive(a.root) << endl;
+
+	cout << "\nTree 'B'\n\n";
+	b.postorder(b.root);
+	cout << "Tree is balanced: " << b.isBalancedNaive(b.root) << endl;
+
+	system("pause");
 	return 0;
 }
-
-
