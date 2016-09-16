@@ -6,6 +6,8 @@ is defined to be a tree such that the heights of the two subtrees of any node ne
 */
 
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -16,24 +18,25 @@ class Tree{
 			TreeNode *left;   // Pointer to the left subtree.
 			TreeNode *right;  // Pointer to the right subtree.
 
-			TreeNode(TreeNode* left = NULL, TreeNode* right = NULL, int item = 0)
-				: left(left)
-				, right(right)
-				, item(item)
-			{}
+			TreeNode(int item = 0)
+				:  item(item)
+			{
+				left, right = NULL;
+			}
+			
 		};
 
 	public:
 		Tree(){	}
 
-		TreeNode *root = new TreeNode(0);
+		TreeNode *root = NULL;
 
 		void treeInsert(TreeNode *&root, int item) {
 			if (root == NULL) {
-				root = new TreeNode(NULL, NULL, item);	
+				root = new TreeNode(item);
 				return;
 			}
-			else if (item < root->item) {
+			else if (item > root->item) {
 				treeInsert(root->left, item);
 			}
 			else {
@@ -48,15 +51,46 @@ class Tree{
 				cout << "Node: " << root->item << " \n";
 			}
 		} 
+
+		void inorderPrint(TreeNode *root) {     
+			if (root){
+				inorderPrint(root->left);
+				cout << "Node: " << root->item << endl;     
+				inorderPrint(root->right); 
+			}
+    	 }
+	 
+		int size(TreeNode *root) { 
+			if (root == NULL) { 
+				return(0); 
+			} 
+			else { 
+				return(size(root->left) + 1 + size(root->right)); 
+			} 
+		} 
+
+		int maxDepth(TreeNode* root) { 
+			if (root==NULL) { 
+				return(0); 
+			} 
+			else { 
+				int lDepth = maxDepth(root->left); 
+				int rDepth = maxDepth(root->right);
+
+				if (lDepth > rDepth) return(lDepth+1); 
+				else return(rDepth+1); 
+			} 
+		} 
 };
 
 int main(){
 	Tree a;
+	srand(time(NULL));
+	
 	for (int i = 0; i < 6; i++){
-		a.treeInsert(a.root, i);
+		a.treeInsert(a.root, rand()%10);
 	}
 	a.postorderPrint(a.root);
-	system("pause");
 	return 0;
 }
 
